@@ -13,7 +13,7 @@ interface CoinInfoDao {
     fun getPriceList(): LiveData<List<CoinInfoDbModel>>
 
     @Query("SELECT * FROM full_price_list WHERE fromSymbol == :fSym LIMIT 1")
-    suspend fun getPriceInfoAboutCoin(fSym: String): LiveData<CoinInfoDbModel>
+    fun getPriceInfoAboutCoin(fSym: String): LiveData<CoinInfoDbModel>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPriceList(priceList: List<CoinInfoDbModel>)

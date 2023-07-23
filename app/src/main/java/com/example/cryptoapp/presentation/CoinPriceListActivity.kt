@@ -3,22 +3,26 @@ package com.example.cryptoapp.presentation
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.example.cryptoapp.R
+import com.example.cryptoapp.databinding.ActivityCoinPrceListBinding
+import com.example.cryptoapp.domain.entities.CoinInfo
 import com.example.cryptoapp.presentation.adapters.CoinInfoAdapter
-import com.example.cryptoapp.data.network.models.CoinInfoDto
-import kotlinx.android.synthetic.main.activity_coin_prce_list.*
 
 class CoinPriceListActivity : AppCompatActivity() {
 
     private lateinit var viewModel: CoinViewModel
 
+    private val binding by lazy {
+        ActivityCoinPrceListBinding.inflate(layoutInflater)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_coin_prce_list)
+        setContentView(binding.root)
         val adapter = CoinInfoAdapter(this)
         adapter.onCoinClickListener = object : CoinInfoAdapter.OnCoinClickListener {
-            override fun onCoinClick(coinInfoDto: CoinInfoDto) {
+            override fun onCoinClick(coinInfoDto: CoinInfo) {
                 val intent = CoinDetailActivity.newIntent(
                     this@CoinPriceListActivity,
                     coinInfoDto.fromSymbol
@@ -26,9 +30,9 @@ class CoinPriceListActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         }
-        rvCoinPriceList.adapter = adapter
-        viewModel = ViewModelProviders.of(this)[CoinViewModel::class.java]
-        viewModel.priceList.observe(this, Observer {
+        binding.rvCoinPriceList.adapter = adapter
+        viewModel = ViewModelProvider(this)[CoinViewModel::class.java]
+        viewModel.coinInfoList.observe(this, Observer {
             adapter.coinInfoList = it
         })
     }
