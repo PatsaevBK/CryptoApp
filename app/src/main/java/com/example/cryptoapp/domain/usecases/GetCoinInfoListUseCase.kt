@@ -5,5 +5,5 @@ import com.example.cryptoapp.domain.repository.Repository
 class GetCoinInfoListUseCase(
     private val repository: Repository
 ) {
-    suspend operator fun invoke() = repository.getCoinInfoList()
+    operator fun invoke() = repository.getCoinInfoList()
 }

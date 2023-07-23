@@ -4,18 +4,21 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cryptoapp.R
-import com.example.cryptoapp.data.network.models.CoinInfoDto
+import com.example.cryptoapp.domain.entities.CoinInfo
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_coin_info.view.*
 
 class CoinInfoAdapter(private val context: Context) : RecyclerView.Adapter<CoinInfoAdapter.CoinInfoViewHolder>() {
 
-    var coinInfoList: List<CoinInfoDto> = listOf()
+    var coinInfoList: List<CoinInfo> = listOf()
         set(value) {
+            val callback = DiffCallback(value, field)
+            val diffResult = DiffUtil.calculateDiff(callback)
+            diffResult.dispatchUpdatesTo(this)
             field = value
-            notifyDataSetChanged()
         }
 
     var onCoinClickListener: OnCoinClickListener? = null
@@ -36,8 +39,8 @@ class CoinInfoAdapter(private val context: Context) : RecyclerView.Adapter<CoinI
                 val lastUpdateTemplate = context.resources.getString(R.string.last_update_template)
                 tvSymbols.text = String.format(symbolsTemplate, fromSymbol, toSymbol)
                 tvPrice.text = price
-                tvLastUpdate.text = String.format(lastUpdateTemplate, getFormattedTime())
-                Picasso.get().load(getFullImageUrl()).into(ivLogoCoin)
+                tvLastUpdate.text = String.format(lastUpdateTemplate, lastUpdate)
+                Picasso.get().load(imageUrl).into(ivLogoCoin)
                 itemView.setOnClickListener {
                     onCoinClickListener?.onCoinClick(this)
                 }
@@ -45,14 +48,14 @@ class CoinInfoAdapter(private val context: Context) : RecyclerView.Adapter<CoinI
         }
     }
 
-    inner class CoinInfoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val ivLogoCoin = itemView.ivLogoCoin
-        val tvSymbols = itemView.tvSymbols
-        val tvPrice = itemView.tvPrice
-        val tvLastUpdate = itemView.tvLastUpdate
+    inner class CoinInfoViewHolder(val binding: Card) : RecyclerView.ViewHolder(binding) {
+        val ivLogoCoin = binding.ivLogoCoin
+        val tvSymbols = binding.tvSymbols
+        val tvPrice = binding.tvPrice
+        val tvLastUpdate = binding.tvLastUpdate
     }
 
     interface OnCoinClickListener {
-        fun onCoinClick(coinInfoDto: CoinInfoDto)
+        fun onCoinClick(coinInfoDto: CoinInfo)
     }
 }

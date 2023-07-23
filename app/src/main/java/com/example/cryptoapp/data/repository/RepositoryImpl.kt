@@ -21,7 +21,7 @@ class RepositoryImpl(
     private val mapper = CoinMapper()
 
 
-    override suspend fun getCoinInfoList(): LiveData<List<CoinInfo>> {
+    override fun getCoinInfoList(): LiveData<List<CoinInfo>> {
         return Transformations.map(coinInfoDao.getPriceList()) { coinInfoDbModelList ->
             coinInfoDbModelList.map { mapper.mapCoinInfoDbModelToCoinInfo(it) }
         }
