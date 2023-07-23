@@ -9,10 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cryptoapp.R
-import com.example.cryptoapp.data.network.ApiFactory.BASE_IMAGE_URL
-import com.example.cryptoapp.databinding.ItemCoinInfoBinding
 import com.example.cryptoapp.domain.entities.CoinInfo
-import com.example.cryptoapp.utils.convertTimestampToTime
 import com.squareup.picasso.Picasso
 
 class CoinInfoAdapter(private val context: Context) :
@@ -26,7 +23,7 @@ class CoinInfoAdapter(private val context: Context) :
             field = value
         }
 
-    var onCoinClickListener: OnCoinClickListener? = null
+    var onCoinClickListener: ((CoinInfo) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CoinInfoViewHolder {
         val view =
@@ -45,10 +42,10 @@ class CoinInfoAdapter(private val context: Context) :
                 tvSymbols.text = String.format(symbolsTemplate, fromSymbol, toSymbol)
                 tvPrice.text = price
                 tvLastUpdate.text =
-                    String.format(lastUpdateTemplate, convertTimestampToTime(lastUpdate))
-                Picasso.get().load(BASE_IMAGE_URL + imageUrl).into(ivLogoCoin)
+                    String.format(lastUpdateTemplate, lastUpdate)
+                Picasso.get().load(imageUrl).into(ivLogoCoin)
                 itemView.setOnClickListener {
-                    onCoinClickListener?.onCoinClick(this)
+                    onCoinClickListener?.invoke(this)
                 }
             }
         }
@@ -62,7 +59,4 @@ class CoinInfoAdapter(private val context: Context) :
         val tvLastUpdate = view.findViewById<TextView>(R.id.tvLastUpdate)
     }
 
-    interface OnCoinClickListener {
-        fun onCoinClick(coinInfoDto: CoinInfo)
-    }
 }

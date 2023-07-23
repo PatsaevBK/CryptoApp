@@ -4,6 +4,8 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-kapt'
 
+apply plugin: "kotlin-parcelize"
+
 android {
     compileSdkVersion 33
     defaultConfig {
@@ -27,6 +29,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    namespace 'com.example.cryptoapp'
 }
 
 dependencies {
