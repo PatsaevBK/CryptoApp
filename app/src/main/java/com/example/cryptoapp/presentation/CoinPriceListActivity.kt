@@ -36,7 +36,7 @@ class CoinPriceListActivity : AppCompatActivity() {
             }
         } else {
             {
-                launchFragment(CoinDetailFragment.newInstance(it))
+                launchFragment(CoinDetailFragment.newInstance(it.fromSymbol))
             }
         }
         binding.rvCoinPriceList.adapter = adapter

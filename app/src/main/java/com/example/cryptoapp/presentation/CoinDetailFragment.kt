@@ -13,7 +13,7 @@ import com.squareup.picasso.Picasso
 
 class CoinDetailFragment : Fragment() {
 
-    private lateinit var coinInfo: CoinInfo
+    private lateinit var fromSymbol: String
 
     private var _binding: FragmentCoinDetailBinding? = null
     private val binding
@@ -25,8 +25,8 @@ class CoinDetailFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            coinInfo = it.getParcelable(ARG_PARAM1) ?: throw RuntimeException("Missing coinInfo")
+        requireArguments().let {
+            fromSymbol = it.getString(ARG_PARAM1) ?: EMPTY_SYMBOL
         }
     }
 
@@ -44,7 +44,7 @@ class CoinDetailFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        viewModel.getDetailInfo(coinInfo.fromSymbol).observe(viewLifecycleOwner) {
+        viewModel.getDetailInfo(fromSymbol).observe(viewLifecycleOwner) {
             with(binding) {
                 tvPrice.text = it.price
                 tvMinPrice.text = it.lowDay
@@ -65,12 +65,13 @@ class CoinDetailFragment : Fragment() {
 
     companion object {
         private const val ARG_PARAM1 = "coinInfo"
+        private const val EMPTY_SYMBOL = ""
 
         @JvmStatic
-        fun newInstance(coinInfo: CoinInfo) =
+        fun newInstance(fromSymbol: String) =
             CoinDetailFragment().apply {
                 arguments = Bundle().apply {
-                    putParcelable(ARG_PARAM1, coinInfo)
+                    putString(ARG_PARAM1, fromSymbol)
                 }
             }
     }
