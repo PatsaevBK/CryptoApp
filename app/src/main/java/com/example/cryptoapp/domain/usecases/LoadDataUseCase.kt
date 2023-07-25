@@ -6,5 +6,5 @@ class LoadDataUseCase(
     private val repository: Repository
 ) {
 
-    suspend operator fun invoke() = repository.loadData()
+    operator fun invoke() = repository.loadData()
 }

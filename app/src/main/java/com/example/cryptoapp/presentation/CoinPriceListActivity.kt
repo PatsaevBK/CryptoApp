@@ -28,11 +28,7 @@ class CoinPriceListActivity : AppCompatActivity() {
         val adapter = CoinInfoAdapter(this)
         adapter.onCoinClickListener = if (isOnePaneMode()) {
             {
-                val intent = CoinDetailActivity.newIntent(
-                    this@CoinPriceListActivity,
-                    it.fromSymbol
-                )
-                startActivity(intent)
+                launchActivity(it)
             }
         } else {
             {
@@ -43,6 +39,14 @@ class CoinPriceListActivity : AppCompatActivity() {
         viewModel.coinInfoList.observe(this) {
             adapter.submitList(it)
         }
+    }
+
+    private fun launchActivity(it: CoinInfo) {
+        val intent = CoinDetailActivity.newIntent(
+            this@CoinPriceListActivity,
+            it.fromSymbol
+        )
+        startActivity(intent)
     }
 
     private fun launchFragment(fragment: Fragment) {
