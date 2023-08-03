@@ -6,6 +6,7 @@ import androidx.lifecycle.map
 import androidx.work.ExistingWorkPolicy
 import androidx.work.WorkManager
 import com.example.cryptoapp.data.database.AppDatabase
+import com.example.cryptoapp.data.database.CoinInfoDao
 import com.example.cryptoapp.data.mapper.CoinMapper
 import com.example.cryptoapp.data.workers.RefreshDataWorkers
 import com.example.cryptoapp.domain.entities.CoinInfo
@@ -14,12 +15,9 @@ import javax.inject.Inject
 
 class RepositoryImpl @Inject constructor(
     private val application: Application,
+    private val coinInfoDao: CoinInfoDao,
     private val mapper: CoinMapper
 ) : Repository {
-
-    private val coinInfoDao = AppDatabase.getInstance(application).coinPriceInfoDao()
-
-
 
     override fun getCoinInfoList(): LiveData<List<CoinInfo>> {
         return coinInfoDao.getPriceList().map { coinInfoDbModelList ->

@@ -1,5 +1,7 @@
 package com.example.cryptoapp.presentation
 
+import android.app.Activity
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -33,8 +35,12 @@ class CoinDetailFragment : Fragment() {
         ViewModelProvider(requireActivity(), viewModelFactory)[CoinViewModel::class.java]
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onAttach(context: Context) {
         component.inject(this)
+        super.onAttach(context)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requireArguments().let {
             fromSymbol = it.getString(ARG_PARAM1) ?: EMPTY_SYMBOL

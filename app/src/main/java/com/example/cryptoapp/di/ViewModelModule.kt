@@ -5,7 +5,6 @@ import com.example.cryptoapp.presentation.CoinViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
-import dagger.multibindings.StringKey
 
 @Module
 interface ViewModelModule {
