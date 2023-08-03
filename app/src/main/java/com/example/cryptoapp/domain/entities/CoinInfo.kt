@@ -1,6 +1,8 @@
 package com.example.cryptoapp.domain.entities
 
-data class CoinInfo(
+import javax.inject.Inject
+
+data class CoinInfo @Inject constructor(
     val fromSymbol: String,
     val toSymbol: String?,
     val price: String?,

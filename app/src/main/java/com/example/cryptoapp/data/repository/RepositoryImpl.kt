@@ -10,14 +10,15 @@ import com.example.cryptoapp.data.mapper.CoinMapper
 import com.example.cryptoapp.data.workers.RefreshDataWorkers
 import com.example.cryptoapp.domain.entities.CoinInfo
 import com.example.cryptoapp.domain.repository.Repository
+import javax.inject.Inject
 
-class RepositoryImpl(
-    private val application: Application
+class RepositoryImpl @Inject constructor(
+    private val application: Application,
+    private val mapper: CoinMapper
 ) : Repository {
 
     private val coinInfoDao = AppDatabase.getInstance(application).coinPriceInfoDao()
 
-    private val mapper = CoinMapper()
 
 
     override fun getCoinInfoList(): LiveData<List<CoinInfo>> {
