@@ -21,6 +21,7 @@ interface DataModule {
     companion object {
 
         @Provides
+        @ApplicationScope
         fun provideCoinInfoDao(
             application: Application
         ): CoinInfoDao {
@@ -28,6 +29,7 @@ interface DataModule {
         }
 
         @Provides
+        @ApplicationScope
         fun provideApiService(): ApiService {
             return ApiFactory.apiService
         }

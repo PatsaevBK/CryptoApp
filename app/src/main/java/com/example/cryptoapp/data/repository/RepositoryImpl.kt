@@ -5,10 +5,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
 import androidx.work.ExistingWorkPolicy
 import androidx.work.WorkManager
-import com.example.cryptoapp.data.database.AppDatabase
 import com.example.cryptoapp.data.database.CoinInfoDao
 import com.example.cryptoapp.data.mapper.CoinMapper
-import com.example.cryptoapp.data.workers.RefreshDataWorkers
+import com.example.cryptoapp.data.workers.RefreshDataWorker
 import com.example.cryptoapp.domain.entities.CoinInfo
 import com.example.cryptoapp.domain.repository.Repository
 import javax.inject.Inject
@@ -35,9 +34,9 @@ class RepositoryImpl @Inject constructor(
     override fun loadData() {
         val workManager = WorkManager.getInstance(application)
         workManager.enqueueUniqueWork(
-            RefreshDataWorkers.NAME,
+            RefreshDataWorker.NAME,
             ExistingWorkPolicy.REPLACE,
-            RefreshDataWorkers.makeRequest()
+            RefreshDataWorker.makeRequest()
         )
     }
 }
