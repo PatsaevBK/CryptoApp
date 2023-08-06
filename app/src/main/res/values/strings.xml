@@ -13,4 +13,6 @@
     <string name="a_z">A-Z</string>
     <string name="last_update">Last update</string>
     <string name="price">Price $</string>
+    <string name="sort">Sort</string>
+    <string name="search">Search</string>
 </resources>

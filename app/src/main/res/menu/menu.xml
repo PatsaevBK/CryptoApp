@@ -2,22 +2,35 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item
-        android:id="@+id/filterAz"
-        android:icon="@drawable/baseline_sort_by_alpha_24"
-        android:title="@string/a_z"
-        app:showAsAction="ifRoom" />
+    <!--<item android:id="@+id/action_search"
+        android:title="@string/search"
+        android:icon="@drawable/baseline_search_24"
+        app:showAsAction="ifRoom|collapseActionView"
+        app:actionViewClass="androidx.appcompat.widget.SearchView" />-->
 
-    <item
-        android:id="@+id/filterPrice"
-        android:icon="@drawable/baseline_attach_money_24"
-        android:title="@string/price"
-        app:showAsAction="ifRoom"/>
+    <!--<item
+        android:id="@+id/filter"
+        android:icon="@drawable/baseline_sort_24"
+        android:title="@string/sort"
+        app:showAsAction="always" />-->
 
-    <item
-        android:id="@+id/filterLastUpdate"
-        android:icon="@drawable/baseline_update_24"
-        android:title="@string/last_update"
-        app:showAsAction="ifRoom"/>
+
+
+    <group android:id="@+id/icon_group"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/sortLastUpdate"
+            android:icon="@drawable/baseline_update_24"
+            android:checked="true"
+            android:title="@string/last_update" />
+        <item
+            android:id="@+id/sortAz"
+            android:icon="@drawable/baseline_sort_by_alpha_24"
+            android:title="@string/a_z" />
+        <item
+            android:id="@+id/sortPrice"
+            android:icon="@drawable/baseline_attach_money_24"
+            android:title="@string/price" />
+    </group>
 
 </menu>

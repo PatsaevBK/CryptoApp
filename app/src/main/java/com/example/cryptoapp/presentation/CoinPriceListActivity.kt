@@ -2,10 +2,16 @@ package com.example.cryptoapp.presentation
 
 import android.os.Bundle
 import android.util.Log
+import android.view.ContextMenu
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.cryptoapp.CryptoApp
+import com.example.cryptoapp.R
 import com.example.cryptoapp.databinding.ActivityCoinPrceListBinding
 import com.example.cryptoapp.domain.entities.CoinInfo
 import com.example.cryptoapp.presentation.adapters.CoinInfoAdapter
@@ -27,12 +33,26 @@ class CoinPriceListActivity : AppCompatActivity() {
     private val applicationComponent by lazy {
         (application as CryptoApp).applicationComponent
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         applicationComponent.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        setupTopAppBar()
         setupRecycleView()
         Log.d("CoinPriceListActivity", "$viewModel")
+    }
+
+    private fun setupTopAppBar() {
+        binding.topAppBar?.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.sortLastUpdate, R.id.sortPrice, R.id.sortAz -> {
+                    clickOnMenuItem(menuItem)
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     private fun setupRecycleView() {
@@ -69,4 +89,12 @@ class CoinPriceListActivity : AppCompatActivity() {
     }
 
     private fun isOnePaneMode() = binding.fragmentContainerView == null
+
+
+    private fun clickOnMenuItem(item: MenuItem) {
+        item.isChecked = !item.isChecked
+        viewModel.makeSort(item.itemId)
+    }
+
+
 }
