@@ -17,4 +17,10 @@ interface CoinInfoDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPriceList(priceList: List<CoinInfoDbModel>)
+
+    @Query("SELECT * FROM full_price_list ORDER BY lastUpdate DESC, fromSymbol")
+    fun getPriceListAZ(): LiveData<List<CoinInfoDbModel>>
+
+    @Query("SELECT * FROM full_price_list ORDER BY lastUpdate DESC, price")
+    fun getPriceListPrice(): LiveData<List<CoinInfoDbModel>>
 }

@@ -1,24 +1,26 @@
 package com.example.cryptoapp.presentation
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.cryptoapp.R
 import com.example.cryptoapp.domain.entities.CoinInfo
-import com.example.cryptoapp.domain.usecases.GetCoinInfoListUseCase
-import com.example.cryptoapp.domain.usecases.GetCoinInfoUseCase
-import com.example.cryptoapp.domain.usecases.LoadDataUseCase
+import com.example.cryptoapp.domain.usecases.*
 import javax.inject.Inject
 
 class CoinViewModel @Inject constructor(
     private val getCoinInfoUseCase: GetCoinInfoUseCase,
     private val getCoinInfoListUseCase: GetCoinInfoListUseCase,
-    private val loadDataUseCase: LoadDataUseCase
+    private val loadDataUseCase: LoadDataUseCase,
+    private val getCoinInfoListAzUseCase: GetCoinInfoListAzUseCase,
+    private val getCoinInfoListPriceUseCase: GetCoinInfoListPriceUseCase
 ) : ViewModel() {
 
     private val defaultList = getCoinInfoListUseCase()
 
-    private val _coinInfoList = MutableLiveData<List<CoinInfo>>()
+
+    private val _coinInfoList = MediatorLiveData<List<CoinInfo>>()
     val coinInfoList: LiveData<List<CoinInfo>>
         get() = _coinInfoList
 
@@ -38,7 +40,7 @@ class CoinViewModel @Inject constructor(
     }
 
     private fun makeSortLastUpdate() {
-        _coinInfoList.value = defaultList.value
+        _coinInfoList.
     }
 
     private fun makeSortPrice() {

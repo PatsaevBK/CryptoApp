@@ -10,4 +10,8 @@ interface Repository {
     fun getCoinInfo(fromSymbol: String): LiveData<CoinInfo>
 
     fun loadData()
+
+    fun getCoinInfoListAZ(): LiveData<List<CoinInfo>>
+
+    fun getCoinInfoListPrice(): LiveData<List<CoinInfo>>
 }

@@ -39,4 +39,16 @@ class RepositoryImpl @Inject constructor(
             RefreshDataWorker.makeRequest()
         )
     }
+
+    override fun getCoinInfoListAZ(): LiveData<List<CoinInfo>> {
+        return coinInfoDao.getPriceListAZ().map { coinInfoDbModelsList ->
+            coinInfoDbModelsList.map { mapper.mapCoinInfoDbModelToCoinInfo(it) }
+        }
+    }
+
+    override fun getCoinInfoListPrice(): LiveData<List<CoinInfo>> {
+        return coinInfoDao.getPriceListPrice().map { coinInfoDbModelsList ->
+            coinInfoDbModelsList.map { mapper.mapCoinInfoDbModelToCoinInfo(it) }
+        }
+    }
 }
