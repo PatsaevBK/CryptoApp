@@ -2,12 +2,9 @@ package com.example.cryptoapp.presentation
 
 import android.os.Bundle
 import android.util.Log
-import android.view.ContextMenu
-import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SearchView
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.cryptoapp.CryptoApp
@@ -44,15 +41,35 @@ class CoinPriceListActivity : AppCompatActivity() {
     }
 
     private fun setupTopAppBar() {
-        binding.topAppBar?.setOnMenuItemClickListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.sortLastUpdate, R.id.sortPrice, R.id.sortAz -> {
-                    clickOnMenuItem(menuItem)
-                    true
+        with(binding.topAppBar) {
+            this?.setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.sortLastUpdate -> {
+                        makeSort(menuItem, CoinViewModel.FILTER_LAST_UPDATE)
+                        true
+                    }
+                    R.id.sortPrice -> {
+                        makeSort(menuItem, CoinViewModel.FILTER_PRICE)
+                        true
+                    }
+                    R.id.sortAz -> {
+                        makeSort(menuItem, CoinViewModel.FILTER_A_Z)
+                        true
+                    }
+                    else -> false
                 }
-                else -> false
             }
+            this?.menu?.get(0)?.let {
+                it.isChecked = true
+                makeSort(it, CoinViewModel.FILTER_LAST_UPDATE)
+            }
+
         }
+    }
+
+    private fun makeSort(menuItem: MenuItem, constSort: String) {
+        menuItem.isChecked = !menuItem.isChecked
+        viewModel.makeSort(constSort)
     }
 
     private fun setupRecycleView() {
@@ -91,10 +108,7 @@ class CoinPriceListActivity : AppCompatActivity() {
     private fun isOnePaneMode() = binding.fragmentContainerView == null
 
 
-    private fun clickOnMenuItem(item: MenuItem) {
-        item.isChecked = !item.isChecked
-        viewModel.makeSort(item.itemId)
-    }
+
 
 
 }
