@@ -16,7 +16,7 @@ class CoinMapper @Inject constructor() {
     fun mapDtoToDbModel(coinInfoDto: CoinInfoDto): CoinInfoDbModel = CoinInfoDbModel(
         coinInfoDto.fromSymbol,
         coinInfoDto.toSymbol,
-        coinInfoDto.price,
+        coinInfoDto.price?.toDouble(),
         coinInfoDto.lastUpdate,
         coinInfoDto.highDay,
         coinInfoDto.lowDay,
@@ -49,7 +49,7 @@ class CoinMapper @Inject constructor() {
     fun mapCoinInfoDbModelToCoinInfo(coinInfoDbModel: CoinInfoDbModel) = CoinInfo(
         coinInfoDbModel.fromSymbol,
         coinInfoDbModel.toSymbol,
-        coinInfoDbModel.price,
+        convertPrice(coinInfoDbModel.price),
         convertTimestampToTime(coinInfoDbModel.lastUpdate),
         coinInfoDbModel.highDay,
         coinInfoDbModel.lowDay,
@@ -65,6 +65,11 @@ class CoinMapper @Inject constructor() {
         val sdf = SimpleDateFormat(pattern, Locale.getDefault())
         sdf.timeZone = TimeZone.getDefault()
         return sdf.format(date)
+    }
+
+    private fun convertPrice(price: Double?): String {
+        if (price == null) return "no price"
+        return "$price $"
     }
 
     companion object {

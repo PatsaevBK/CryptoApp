@@ -1,6 +1,5 @@
 package com.example.cryptoapp.presentation
 
-import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -8,11 +7,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.example.cryptoapp.CryptoApp
 import com.example.cryptoapp.databinding.FragmentCoinDetailBinding
-import com.example.cryptoapp.domain.entities.CoinInfo
+import com.example.cryptoapp.presentation.viewmodel.CoinViewModel
+import com.example.cryptoapp.presentation.viewmodel.ViewModelFactory
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -62,16 +66,20 @@ class CoinDetailFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        viewModel.getDetailInfo(fromSymbol).observe(viewLifecycleOwner) {
-            with(binding) {
-                tvPrice.text = it.price
-                tvMinPrice.text = it.lowDay
-                tvMaxPrice.text = it.highDay
-                tvLastMarket.text = it.lastMarket
-                tvLastUpdate.text = it.lastUpdate
-                tvFromSymbol.text = it.fromSymbol
-                tvToSymbol.text = it.toSymbol
-                Picasso.get().load(it.imageUrl).into(ivLogoCoin)
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.getDetailInfo(fromSymbol).collect {
+                    with(binding) {
+                        tvPrice.text = it.price
+                        tvMinPrice.text = it.lowDay
+                        tvMaxPrice.text = it.highDay
+                        tvLastMarket.text = it.lastMarket
+                        tvLastUpdate.text = it.lastUpdate
+                        tvFromSymbol.text = it.fromSymbol
+                        tvToSymbol.text = it.toSymbol
+                        Picasso.get().load(it.imageUrl).into(ivLogoCoin)
+                    }
+                }
             }
         }
     }
