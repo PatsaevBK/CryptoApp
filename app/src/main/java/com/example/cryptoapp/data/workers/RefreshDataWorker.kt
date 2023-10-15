@@ -17,18 +17,15 @@ class RefreshDataWorker(
 ): CoroutineWorker(context, workerParameters) {
 
     override suspend fun doWork(): Result {
-        while (true) {
-            try {
-                val topCoins = apiService.getTopCoinsInfo(limit = 50)
-                val stringNamesTopCoins = mapper.mapNamesListToString(topCoins)
-                val jsonContainer = apiService.getFullPriceList(fSyms = stringNamesTopCoins)
-                val listCoinInfoDto = mapper.mapJsonContainerToListCoinInfo(jsonContainer)
-                coinInfoDao.insertPriceList(listCoinInfoDto.map { mapper.mapDtoToDbModel(it) })
-
-            } catch (e: Exception) {
-
-            }
-            delay(10000)
+        return try {
+            val topCoins = apiService.getTopCoinsInfo(limit = 50)
+            val stringNamesTopCoins = mapper.mapNamesListToString(topCoins)
+            val jsonContainer = apiService.getFullPriceList(fSyms = stringNamesTopCoins)
+            val listCoinInfoDto = mapper.mapJsonContainerToListCoinInfo(jsonContainer)
+            coinInfoDao.insertPriceList(listCoinInfoDto.map { mapper.mapDtoToDbModel(it) })
+            Result.success()
+        } catch (e: Exception) {
+            Result.failure()
         }
     }
 

@@ -17,7 +17,6 @@ class CoinInfoAdapter(private val context: Context) :
     var onCoinClickListener: ((CoinInfo) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CoinInfoViewHolder {
-        Log.d("Adapter", "onCreateViewHolder")
         val binding =
             ItemCoinInfoBinding.inflate(
                 LayoutInflater.from(parent.context),
@@ -29,7 +28,6 @@ class CoinInfoAdapter(private val context: Context) :
 
 
     override fun onBindViewHolder(holder: CoinInfoViewHolder, position: Int) {
-//        Log.d("Adapter", "onBindViewHolder")
         val coin = getItem(position)
         with(holder.binding) {
             with(coin) {

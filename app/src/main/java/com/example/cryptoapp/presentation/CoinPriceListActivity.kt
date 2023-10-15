@@ -72,6 +72,10 @@ class CoinPriceListActivity : AppCompatActivity() {
                         filter()
                         true
                     }
+                    R.id.actionRefresh -> {
+                        viewModel.refreshData()
+                        true
+                    }
                     else -> false
                 }
             }
@@ -82,22 +86,18 @@ class CoinPriceListActivity : AppCompatActivity() {
         val builder = AlertDialog.Builder(this)
         builder.setTitle(R.string.choose_sort)
             .setSingleChoiceItems(R.array.sortItems, selectedItem) { dialog, item ->
-                selectItem(item)
+                when (item) {
+                    0 -> viewModel.makeSortLastUpdate()
+                    1 -> viewModel.makeSortAZ()
+                    2 -> viewModel.makeSortPrice()
+                }
                 selectedItem = item
-                binding.rvCoinPriceList.smoothScrollToPosition(0)
                 dialog.dismiss()
             }
         val dialog = builder.create()
         dialog.show()
     }
 
-    private fun selectItem(item: Int) {
-        when (item) {
-            0 -> viewModel.makeSortLastUpdate()
-            1 -> viewModel.makeSortAZ()
-            2 -> viewModel.makeSortPrice()
-        }
-    }
 
     private fun setupRecycleView() {
         val adapter = CoinInfoAdapter(this)
